@@ -17,5 +17,6 @@
   },
   "eslintConfig": {
     "extends": "./node_modules/react-scripts/config/eslint.js"
-  }
+  },
+  "homepage": "http://chuckha.github.io/ColorFill"
 }
