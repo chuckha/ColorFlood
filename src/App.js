@@ -1,26 +1,48 @@
 import React, { Component } from 'react';
 import Grid from './components/Grid/Grid';
 import ColorPickers from './components/ColorPickers/ColorPickers';
-import Counter from './components/Counter/Counter';
+
+import './index.css';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      grid: [
-        [1,0,1,2,3],
-        [2,2,1,1,0],
-        [3,1,0,3,1],
-        [0,1,2,3,1],
-        [1,3,3,2,1],
-      ],
-      colors: ['blue','red','green','yellow'],
-      count: 0,
-    }
+    let SIZE = 12;
+    let COLORS = ['blue','red','green','yellow','orange'];
     this.incrementCount = this.incrementCount.bind(this);
     this.colorFill = this.colorFill.bind(this);
     this.updateCell = this.updateCell.bind(this);
     this._colorFill = this._colorFill.bind(this);
+    this.newGrid = this.newGrid.bind(this);
+    this.sliderInput = this.sliderInput.bind(this);
+    this.restart = this.restart.bind(this);
+    this.state = {
+      size: SIZE,
+      grid: this.newGrid(SIZE, COLORS),
+      colors: COLORS,
+      count: 0,
+    }
+  }
+
+  newGrid(size, colors) {
+    var grid = [];
+    for (var i = 0, max=size; i < max; i++) {
+      grid.push([]);
+      for (var j = 0, max2=size; j < max2; j++) {
+        grid[i].push(this.randomIndexFromCollection(colors));
+      }
+    }
+    return grid;
+  }
+
+  randomIndexFromCollection(collection) {
+    var index = 0;
+    for (var i = 1, max = collection.length; i < max; i++) {
+      if (Math.random() < 1/(i+1)) {
+        index = i;
+      }
+    }
+    return index;
   }
 
   updateCell(color, i, j) {
@@ -39,6 +61,9 @@ class App extends Component {
 
   colorFill(colorIndex, i, j) {
     var myColor = this.state.grid[i][j];
+    if (myColor === colorIndex) {
+      return
+    }
     this.updateCell(colorIndex, i, j);
     this._colorFill(myColor, colorIndex, i-1,j)
     this._colorFill(myColor, colorIndex, i,j+1)
@@ -52,13 +77,41 @@ class App extends Component {
     });
   }
 
+  restart() {
+    this.setState({
+      grid: this.newGrid(this.state.size, this.state.colors),
+      count: 0
+    });
+  }
+
+  sliderInput(value) {
+    this.setState({
+      size: value,
+      grid: this.newGrid(value, this.state.colors),
+      count: 0
+    });
+  }
+
   render() {
     return (
-      <div>
-        <h1>Color Fill</h1>
-        <div className="count">Number of clicks: <Counter count={this.state.count} /></div>
-        <div><ColorPickers colors={this.state.colors} clickHandler={this.colorFill} incrementCount={this.incrementCount}/></div>
-        <Grid width="5" height="5" grid={this.state.grid} colors={this.state.colors} />
+      <div className="content">
+        <div className="header">
+          <h1>Color Flood</h1>
+          <div className="newgame" onClick={(e) => this.restart()}>New Game</div>
+          <div className="count">Changes <span>{this.state.count}</span></div>
+        </div>
+{/*        <div className="sizeChanger">
+          <span className="size-value">{this.state.size}</span>
+          <input
+            type="range"
+            value={this.state.size}
+            min={MIN}
+            max={MAX}
+            step="1"
+            onChange={(e) => this.sliderInput(e.target.value)} />
+        </div>*/}
+          <div><ColorPickers colors={this.state.colors} clickHandler={this.colorFill} incrementCount={this.incrementCount}/></div>
+        <Grid grid={this.state.grid} colors={this.state.colors} size={this.state.size}/>
       </div>
     );
   }

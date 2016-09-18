@@ -1,8 +1,27 @@
-.cell {
+.cell-5 {
 	width: 20%;
-	height: 100px;
 }
-
+.cell-6 {
+	width: 16.66%;
+}
+.cell-7 {
+	width: 14.28%;
+}
+.cell-8 {
+	width: 12.5%;
+}
+.cell-9 {
+	width: 11.11%;
+}
+.cell-10 {
+	width: 10%;
+}
+.cell-11 {
+	width: 9.09%;
+}
+.cell-12 {
+	width: 8.33%;
+}
 .blue {
 	background-color: blue;
 }
@@ -14,4 +33,7 @@
 }
 .yellow {
 	background-color: yellow;
+}
+.orange {
+	background-color: orange;
 }

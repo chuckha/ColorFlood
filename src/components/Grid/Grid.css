@@ -1,5 +1,9 @@
-
 .grid {
 	display: flex;
 	flex-wrap: wrap;
+	min-width: 400px;
+	max-width: 80vh;
+	height: 100vw;
+    max-height: 80vh;
+    min-height: 400px;
 }

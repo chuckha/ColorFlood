@@ -2,10 +2,10 @@ import React from 'react';
 import Cell from '../Cell/Cell';
 import './Grid.css';
 
-const Grid = (props) => {
-  let rows = props.grid.map((row, i) => {
+const Grid = ({grid, colors, size}) => {
+  let rows = grid.map((row, i) => {
     return row.map((cell, j) => {
-      return <Cell key={i + " " + j} color={props.colors[cell]} />
+      return <Cell key={i + " " + j} color={colors[cell]} size={size} />
     })
   })
   return (
