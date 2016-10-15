@@ -2,12 +2,11 @@ import React from 'react';
 import Cell from '../Cell/Cell';
 import './Grid.css';
 
-const Grid = ({grid, colors, size}) => {
-  let rows = grid.map((row, i) => {
-    return row.map((cell, j) => {
-      return <Cell key={i + " " + j} color={colors[cell]} size={size} />
-    })
-  })
+const Grid = ({grid, colors}) => {
+  let rows = Object.keys(grid.nodes).map((v) => {
+    return <Cell key={v} color={colors[grid.nodes[v].color]} size={grid.size} />
+  });
+
   return (
     <div className="grid">
       {rows}
