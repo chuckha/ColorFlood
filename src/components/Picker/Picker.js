@@ -2,14 +2,14 @@ import React from 'react';
 
 import './Picker.css';
 
-const Picker = ({color, colorIndex, clickHandler, incrementCount}) => {
+const Picker = ({color, clickHandler}) => {
   let className = color + ' picker';
   return (
-    <div className={className}
-    onClick={(e) => {
-      incrementCount();
-      clickHandler(colorIndex);
-    }}
+    <div 
+      className={className}
+      onClick={(e) => {
+        clickHandler(color);
+      }}
     ></div>
   );
 }
