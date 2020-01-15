@@ -1,6 +1,6 @@
 # Color Fill!
 
-[give it a go!](http://chuckha.github.io/ColorFlood)
+# TODO: add a new link for a playable demo
 
 # development
 
