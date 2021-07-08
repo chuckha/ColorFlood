@@ -12,7 +12,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.incrementCount = this.incrementCount.bind(this);
-    this.sliderInput = this.sliderInput.bind(this);
+    // this.sliderInput = this.sliderInput.bind(this);
     this.restart = this.restart.bind(this);
     this.colorFill = this.colorFill.bind(this);
     this.state = {
@@ -20,6 +20,7 @@ class App extends Component {
       graph: new Graph(SIZE),
       colors: COLORS,
       count: 0,
+      isFinished: false
     }
   }
 
@@ -29,23 +30,48 @@ class App extends Component {
     });
   }
 
+  checkWinCondition() {
+    if(this.isGridComplete()) {
+      this.setState({isFinished: true})
+    }
+  }
+
+
+  isGridComplete() {
+    const grid = this.state.graph.nodes
+    const remainingColors = Object.keys(grid).map(cell=> grid[cell].color).filter(function() {
+      var seen = {};
+      return (element, index, array) => {
+        return !(element in seen) && (seen[element] = 1);
+      };
+    }())
+    return remainingColors.length === 1;
+  }
+
   restart() {
     this.setState({
       graph: new Graph(this.state.size),
-      count: 0
+      count: 0,
+      isFinished: false
     });
   }
 
-  sliderInput(value) {
-    this.setState({
-      size: value,
-      graph: this.newGrid(value, this.state.colors),
-      count: 0
-    });
-  }
+  // sliderInput(value) {
+  //   this.setState({
+  //     size: value,
+  //     graph: this.newGrid(value, this.state.colors),
+  //     count: 0
+  //   });
+  // }
 
   colorFill(color) {
-    this.state.graph.colorFill(color);
+    const currColor = this.state.graph.nodes['0'].color;
+    const colorIdx = this.state.colors.indexOf(color)
+    if(currColor !== colorIdx && !this.state.isFinished) {
+      this.state.graph.colorFill(colorIdx);
+      this.incrementCount();
+      this.checkWinCondition();
+    }
   }
 
   render() {
@@ -66,8 +92,21 @@ class App extends Component {
             step="1"
             onChange={(e) => this.sliderInput(e.target.value)} />
         </div>*/}
-          <div><ColorPickers colors={this.state.colors} clickHandler={this.colorFill} incrementCount={this.incrementCount}/></div>
-        <Grid grid={this.state.graph} colors={this.state.colors} size={this.state.size}/>
+          <div>
+            <ColorPickers 
+              colors={this.state.colors} 
+              clickHandler={this.colorFill} 
+              incrementCount={this.incrementCount}
+            />
+          </div>
+        <Grid 
+          grid={this.state.graph} 
+          colors={this.state.colors} 
+          clickHandler={this.colorFill} 
+          size={this.state.size}
+          isFinished={this.state.isFinished}
+          count={this.state.count}
+        />
       </div>
     );
   }
