@@ -1,22 +1,128 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="./src/favicon.ico">
-    <title>Color Flood</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+        <script src="wasm_exec.js"></script>
+        <script defer>
+            const go = new Go();
+            WebAssembly.instantiateStreaming(fetch("game.wasm"), go.importObject).then((result) => {
+                go.run(result.instance);
+                start();
+            });
+        </script>
+        <script defer src="app.js"></script>
+        <style>
+            .circle:hover {
+                cursor: pointer;
+            }
+            #yellow {
+                background-color: yellow;
+            }
+            #red {
+                background-color: red;
+            }
+            #green {
+                background-color: green;
+            }
+            #blue {
+                background-color: blue;
+            }
+            #pink {
+                background-color: pink;
+            }
+        </style>
+    </head>
+    <body>
+        <section class="hero is-small has-background-primary-light">
+            <div class="hero-body">
+                <div class="container">
+                    <p class="title">
+                        Color Flood
+                    </p>
+                </div>
+            </div>
+            <div class="hero-foot">
+                <nav class="navbar">
+                    <div class="container">
+                        <div class="navbar-menu">
+                            <div class="navbar-end">
+                                <a class="navbar-item" id="about-link">about</a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` in this folder.
-      To create a production bundle, use `npm run build`.
-    -->
-  </body>
+        </section>
+        <nav class="level">
+            <div class="level-item has-text-centered">
+                <div>
+                    <p class="heading">Your score</p>
+                    <p class="title" id="count">0</p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered">
+                <div>
+                    <p class="heading">Computer's score</p>
+                    <p class="title" id="try-to-beat">0</p>
+                </div>
+            </div>
+        </nav>
+        <section class="section">
+            <nav class="level">
+                <div class="level-item has-text-centered">
+                    <button class="button is-large" id="red"></button>
+                    <button class="button is-large" id="blue"></button>
+                    <button class="button is-large" id="pink"></button>
+                    <button class="button is-large" id="green"></button>
+                    <button class="button is-large" id="yellow"></button>
+                    </div>
+                </div>
+            </nav>
+    
+            <div class="container has-text-centered">
+                <canvas id="canvas" width="300" height="300"></canvas>
+            </div>
+        </section>
+        <section class="section">
+            <div class="box has-background-info-light">
+                <label class="label" for="level">level selector</label>
+                <form class="field has-addons">
+                    <p class="control">
+                        <input type="text" class="input" id="level" name="level" value="0"></input>
+                    </p>
+                    <p class="control">
+                        <input class="button" type="submit" value="go"></input>
+                    </p>
+                </form>
+            </div>
+        </section>
+        <div class="modal" id="about-modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">About</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <div class="content">
+                        <p>
+                            This is an experimental game where the backend is written 
+                            in Go and compiled to <a href="https://webassembly.org">Wasm</a>.
+                             Honestly, it started from a desire to learn about import maps but then 
+                             I didn't really feel like implementing anything hard in JavaScript. Then 
+                             the frontend code was so simple I didn't need any dependencies. 
+                             So overall, a bad pick for learning import maps, but great for Wasm!
+                        </p>
+                        <p>I found <a href="https://golangbot.com/webassembly-using-go/">this page to be quite helpful</a> when writing Go for Wasm.</p>
+                        <p>Feel free to read through the source code and find me on <a href="https://twitter.com/chuck_ha">twitter</a> if you have questions!</p>
+                    </div>
+                </section>
+                <footer class="modal-card-foot">
+                    <a class="card-footer-item" href="https://github.com/chuckha/ColorFlood">View the source code</a>
+                </footer>          
+            </div>
+        </div>    
+    </body>
 </html>

@@ -1,16 +1,7 @@
-# Color Fill!
+# Flood-It clone
 
-# TODO: add a new link for a playable demo
+## WASM
 
-# development
+The Go engine compiles to WASM and is shimmed in with wasm_exec.js.
 
-1. clone this repo
-2. cd into it
-3. npm install
-4. npm run start
-5. YAY
-
-# deploying
-
-1. npm run build
-2. follow instructions
+This is complete overkill for WASM as the game can be implemented in like, 50 lines of JS. But I'd STILL rather write Go.
